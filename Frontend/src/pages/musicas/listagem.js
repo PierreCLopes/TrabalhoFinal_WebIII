@@ -39,7 +39,7 @@ class Listagem extends React.Component {
                                 Nome da Música
                             </TableColumn>
                             <TableColumn
-                                dataField='album_id'
+                                dataField='album'
                                 searchable
                                 dataSort>
                                 Album

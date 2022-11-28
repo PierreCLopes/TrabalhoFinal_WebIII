@@ -10,7 +10,6 @@ import Cadastro from './cadastro.js';
 
 function Album() {
 
-
     /**
      * 0 => Listagem
      * 1 => Cadastro
@@ -30,16 +29,18 @@ function Album() {
 
     useEffect(() => {
         api.get("album", '', headers)
-            .then(response => {
-                var content = []
+            .then(async response => {
+                var content = []            
                 
-                response.data.dados.forEach(row => {
+                await response.data.dados.forEach(row => {                    
+                    console.log(row)
                     content.push({
                         id: row.id,
                         nome: row.nome,
-                        ano: row.ano,
-                        artista: row.artista_id
-                    })
+                        ano: row.ano,                        
+                        artista: row.artista.nome
+                    })                    
+                     
                 });
                 setContent(content);
             })
@@ -58,16 +59,13 @@ function Album() {
 
         api.get(`album?id=${id}`, '', headers)
             .then(response => {
-                console.log('response')
-                console.log(response.data.dados)
                 let dataResponse = response.data.dados;
                 let album = {
                     id: dataResponse.id,
                     nome: dataResponse.nome,
+                    ano: dataResponse.ano
                     // artista: ((dataResponse.artista != null) ? dataResponse.artista : {})
                 }
-
-                console.log(album)
                 setAlbum(album);
                 setPageTipe(2);
             })

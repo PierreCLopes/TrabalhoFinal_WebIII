@@ -21,6 +21,9 @@ export default class AlbumController {
                     },
                     orderBy: {
                         id: 'asc'
+                    },
+                    include: {
+                        artista: true  
                     }
                 });
                 if (album[0]) {
@@ -37,6 +40,9 @@ export default class AlbumController {
                 const albuns = await client.album.findMany({
                     skip: Number(skip),
                     take: Number(take),
+                    include: {
+                        artista: true
+                    }
                 });
                 if (albuns) {
                     resposta.totalLinhas = albuns.length;

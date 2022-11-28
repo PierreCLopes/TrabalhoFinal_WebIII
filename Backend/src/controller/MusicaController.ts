@@ -21,6 +21,9 @@ export default class MusicaController {
                     },
                     orderBy: {
                         id: 'asc'
+                    },
+                    include: {
+                        album: true  
                     }
                 });
                 if (musica[0]) {
@@ -37,6 +40,9 @@ export default class MusicaController {
                 const musicas = await client.musicas.findMany({
                     skip: Number(skip),
                     take: Number(take),
+                    include: {
+                        album: true  
+                    }
                 });
                 if (musicas) {
                     resposta.totalLinhas = musicas.length;

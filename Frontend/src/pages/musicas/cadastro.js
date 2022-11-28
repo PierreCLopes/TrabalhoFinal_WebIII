@@ -23,12 +23,12 @@ function Cadastro(props) {
     useEffect(() => {       
         api.get("album", '', headers)
         .then(response => {
+            console.log(response)
             var content = []
             response.data.dados.forEach(row => {
                 content.push({
                     id: row.id,
-                    nome: row.nome,
-                    
+                    nome: row.nome                     
                 })
             });
             setAlbuns(content);
@@ -129,7 +129,7 @@ function Cadastro(props) {
                         id="albuns"
                         fullWidth
                         className="m-3"
-                        label="Albums"
+                        label="Albuns"
                         variant="outlined"
                         value={albuns}
                         onChange={(event) => {

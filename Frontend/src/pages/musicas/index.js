@@ -32,12 +32,13 @@ function Musica() {
         api.get("musica", '', headers)
             .then(response => {
                 var content = []                
-               
                 response.data.dados.forEach(row => {
+                    console.log(row)
+                    console.log(row)
                     content.push({
                         id: row.id,
                         nome: row.nome,                        
-                        album_id: row.album_id
+                        album: row.album.nome 
                     })
                 });
                 setContent(content);
@@ -60,8 +61,8 @@ function Musica() {
                 let dataResponse = response.data.dados;
                 let musica = {
                     id: dataResponse.id,
-                    nome: dataResponse.nome,
-                    album_id: dataResponse.album_id
+                    nome: dataResponse.nome,                                 
+                    album: dataResponse.album.nome
                 }
 
                 setMusic(musica);
@@ -82,7 +83,7 @@ function Musica() {
             'access-control-allow-origin': '*'
         }
 
-        api.delete(`musica/${id}`, '', headers)
+        api.delete(`musica?id=${id}`, '', headers)
             .then(response => {
                 if (response.status === 200) {
                     setAlertType("success");
