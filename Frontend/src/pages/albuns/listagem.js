@@ -20,11 +20,15 @@ class Listagem extends React.Component {
             defaultSortOrder: 'asc'
         };
 
+                
+        console.log('this.props');
+        console.log(this.props);
         return (
             <Grid item xs={12}>
                 <Card>
                     <CardContent>
                         <Table
+                        
                             data={this.props.dataContent}
                             options={options}>
                             <TableColumn

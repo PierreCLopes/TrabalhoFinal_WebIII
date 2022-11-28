@@ -19,7 +19,6 @@ class Listagem extends React.Component {
             defaultSortName: 'id',
             defaultSortOrder: 'asc'
         };
-
         return (
             <Grid item xs={12}>
                 <Card>
@@ -40,10 +39,10 @@ class Listagem extends React.Component {
                                 Nome da Música
                             </TableColumn>
                             <TableColumn
-                                dataField='releaseDate'
+                                dataField='album_id'
                                 searchable
                                 dataSort>
-                                Data de Lançamento
+                                Album
                             </TableColumn>
                             <TableColumn
                                 dataFormat={createCrudButtons}

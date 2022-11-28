@@ -13,7 +13,7 @@ function Cadastro(props) {
     const [ano, setAno] = useState();
     const [anoError, setAnoError] = useState("");
 
-    const [artistas, setArtista] = useState('');
+    const [artistas, setArtista] = useState([]);
     const [artistaIdError, setArtistaIdError] = useState("");
 
     const headers = {
@@ -22,21 +22,21 @@ function Cadastro(props) {
     }
 
     useEffect(() => {
-        api.get("artista", '', headers)
-            .then(response => {
-                var content = []
-                response.data.found.forEach(row => {
-                    content.push({
-                        id: row.id,
-                        nome: row.nome
-                    })
-                });
-                setArtista(content);
-            })
-            .catch((err) => {
-                console.log("Error");
-                console.log(err);
-            });
+        // api.get("artista", '', headers)
+        //     .then(response => {
+        //         var content = []
+        //         response.data.found.forEach(row => {
+        //             content.push({
+        //                 id: row.id,
+        //                 nome: row.nome
+        //             })
+        //         });
+        //         setArtista(content);
+        //     })
+        //     .catch((err) => {
+        //         console.log("Error");
+        //         console.log(err);
+        //     });
 
         if (props.album !== "") {
             defineAlteracao(props.album);
@@ -47,7 +47,7 @@ function Cadastro(props) {
         setId(album.id);
         setName(album.nome);
         setAno(album.ano);
-        setArtista(album.artista_id.id);
+        setArtista(album.artista_id);
     }
 
     function efetuaCadastro() {
@@ -85,7 +85,7 @@ function Cadastro(props) {
             };
 
             if (id !== 0) {
-                api.patch(`album/${id}`, data, headers)
+                api.put(`album`, data, headers)
                     .then(response => {
                         if (response.status === 200) {
                             props.cadastroSucesso()
@@ -157,14 +157,9 @@ function Cadastro(props) {
                         onChange={(e) => { setArtista(e.target.value) }}
                         helperText={artistaIdError}
                         error={(artistaIdError !== "")}
+                        
                         select>
-                        {artistas.map(option => (
-                            <MenuItem
-                                key={option.id}
-                                value={option.id}>
-                                {option.nome}
-                            </MenuItem>
-                        ))}
+                        
                     </TextField>
                 </Grid>               
 

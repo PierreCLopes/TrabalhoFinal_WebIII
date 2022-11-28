@@ -32,13 +32,13 @@ function Album() {
         api.get("album", '', headers)
             .then(response => {
                 var content = []
-                console.log(response.data.dados)
+                
                 response.data.dados.forEach(row => {
                     content.push({
                         id: row.id,
                         nome: row.nome,
                         ano: row.ano,
-                        artista: ((row.artista_id != null) ? row.artista_id.nome : ''),
+                        artista: row.artista_id
                     })
                 });
                 setContent(content);
@@ -56,13 +56,15 @@ function Album() {
             'access-control-allow-origin': '*'
         }
 
-        api.get(`album/${id}`, '', headers)
+        api.get(`album?id=${id}`, '', headers)
             .then(response => {
-                let dataResponse = response.data.album;
+                console.log('response')
+                console.log(response.data.dados)
+                let dataResponse = response.data.dados;
                 let album = {
                     id: dataResponse.id,
                     nome: dataResponse.nome,
-                    artista: ((dataResponse.artista != null) ? dataResponse.artista : {})
+                    // artista: ((dataResponse.artista != null) ? dataResponse.artista : {})
                 }
 
                 console.log(album)
@@ -84,7 +86,7 @@ function Album() {
             'access-control-allow-origin': '*'
         }
 
-        api.delete(`album/${id}`, '', headers)
+        api.delete(`album?id=${id}`, '', headers)
             .then(response => {
                 if (response.status === 200) {
                     setAlertType("success");

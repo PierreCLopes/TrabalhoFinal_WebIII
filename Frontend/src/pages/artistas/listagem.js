@@ -19,7 +19,6 @@ class Listagem extends React.Component {
             defaultSortName: 'id',
             defaultSortOrder: 'asc'
         };
-
         return (
             <Grid item xs={12}>
                 <Card>

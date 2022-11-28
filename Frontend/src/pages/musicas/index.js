@@ -37,7 +37,7 @@ function Musica() {
                     content.push({
                         id: row.id,
                         nome: row.nome,                        
-                        // releaseDate: row.release_date
+                        album_id: row.album_id
                     })
                 });
                 setContent(content);
@@ -55,14 +55,13 @@ function Musica() {
             'access-control-allow-origin': '*'
         }
 
-        api.get(`musica/${id}`, '', headers)
+        api.get(`musica?id=${id}`, '', headers)
             .then(response => {
-                let dataResponse = response.data.musica;
+                let dataResponse = response.data.dados;
                 let musica = {
                     id: dataResponse.id,
                     nome: dataResponse.nome,
-                    releaseDate: dataResponse.release_date,
-                    bands: dataResponse.bands
+                    album_id: dataResponse.album_id
                 }
 
                 setMusic(musica);

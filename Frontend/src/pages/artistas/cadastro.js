@@ -40,11 +40,12 @@ function Cadastro(props) {
             }
 
             var data = {
-                nome: nome,
+                id: id,    
+                nome: nome
             };
 
             if (id !== 0) {
-                api.patch(`artistas/${id}`, data, headers)
+                api.put('/artista', data, headers)
                     .then(response => {
                         if (response.status === 200) {
                             props.cadastroSucesso()

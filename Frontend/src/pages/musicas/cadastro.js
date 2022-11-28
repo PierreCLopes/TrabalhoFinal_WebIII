@@ -10,10 +10,10 @@ function Cadastro(props) {
     const [nome, setNome] = useState();
     const [nomeError, setnomeError] = useState("");
 
-    const [selectedAlbuns, setSelectedAlbuns] = useState([]);
-    const [selectedAlbunsError, setSelectedAlbunsError] = useState("");
-
     const [albuns, setAlbuns] = useState([]);    
+
+    const [selectedAlbunsError] = useState("");
+
 
     const headers = {
         'Content-Type': 'application/json',
@@ -28,6 +28,7 @@ function Cadastro(props) {
                 content.push({
                     id: row.id,
                     nome: row.nome,
+                    
                 })
             });
             setAlbuns(content);
@@ -46,11 +47,7 @@ function Cadastro(props) {
     function defineAlteracao(musica) {
         setId(musica.id);
         setNome(musica.nome);
-
-        let albunsSelecionadas = []
-        musica.album_id.forEach((album) => { albunsSelecionadas.push(album.id) })
-
-        setSelectedAlbuns(albunsSelecionadas)
+        setAlbuns(musica.album_id)
     }
 
     function efetuaCadastro() {
@@ -68,7 +65,7 @@ function Cadastro(props) {
 
             let albunsSelecionadas = [];
             albuns.forEach((album) => {
-                if (selectedAlbuns.indexOf(album.id) >= 0) {
+                if (albuns.indexOf(album.id) >= 0) {
                     albunsSelecionadas.push(album)
                 }
             })            
@@ -79,7 +76,7 @@ function Cadastro(props) {
             };
 
             if (id !== 0) {
-                api.patch(`musica/${id}`, data, headers)
+                api.put(`musica?id=${id}`, data, headers)
                     .then(response => {
                         if (response.status === 200) {
                             props.cadastroSucesso()
@@ -134,12 +131,12 @@ function Cadastro(props) {
                         className="m-3"
                         label="Albums"
                         variant="outlined"
-                        value={selectedAlbuns}
+                        value={albuns}
                         onChange={(event) => {
                             const {
                                 target: { value },
                             } = event;
-                            setSelectedAlbuns(
+                            setAlbuns(
                                 // On autofill we get a stringified value.
                                 typeof value === 'string' ? value.split(',') : value,
                             );

@@ -54,9 +54,9 @@ function Artista() {
             'access-control-allow-origin': '*'
         }
 
-        api.get(`artista/${id}`, '', headers)
+        api.get(`artista?id=${id}`, '', headers)
             .then(response => {
-                let dataResponse = response.data.artista;
+                let dataResponse = response.data.dados;
                 let artista = {
                     id: dataResponse.id,
                     nome: dataResponse.nome
@@ -80,7 +80,7 @@ function Artista() {
             'access-control-allow-origin': '*'
         }
 
-        api.delete(`artista/${id}`, '', headers)
+        api.delete(`artista?id=${id}`, '', headers)
             .then(response => {
                 if (response.status === 200) {
                     setAlertType("success");
