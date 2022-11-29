@@ -71,7 +71,7 @@ export default class ArtistaController {
                 }
             });
             if (artista) {
-                return response.json(
+                return response.status(201).json(
                     artista
                 );
             }  
@@ -117,7 +117,7 @@ export default class ArtistaController {
                     }
                 })
                 if (deleteArtista) {
-                    return response.status(202).json(
+                    return response.status(200).json(
                         {
                             mensagem: "Sucesso"
                         }

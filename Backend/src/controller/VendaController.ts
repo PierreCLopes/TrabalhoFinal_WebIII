@@ -71,7 +71,7 @@ export default class VendaController {
                 }
             });
             if (venda) {
-                return response.json(
+                return response.status(201).json(
                     venda
                 );
             }  
@@ -116,7 +116,7 @@ export default class VendaController {
                     }
                 })
                 if (deleteVenda) {
-                    return response.status(202).json(
+                    return response.status(200).json(
                         {
                             mensagem: "Sucesso"
                         }
