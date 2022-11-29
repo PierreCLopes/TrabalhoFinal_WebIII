@@ -10,10 +10,10 @@ function Cadastro(props) {
     const [nome, setNome] = useState();
     const [nomeError, setnomeError] = useState("");
 
-    const [albuns, setAlbuns] = useState([]);    
+    const [selectedAlbuns, setSelectedAlbuns] = useState([]);
+    const [selectedAlbunsError, setSelectedAlbunsError] = useState("");
 
-    const [selectedAlbunsError] = useState("");
-
+    const [albuns, setAlbuns] = useState([]);
 
     const headers = {
         'Content-Type': 'application/json',
@@ -23,8 +23,8 @@ function Cadastro(props) {
     useEffect(() => {       
         api.get("album", '', headers)
         .then(response => {
-            console.log(response)
             var content = []
+
             response.data.dados.forEach(row => {
                 content.push({
                     id: row.id,
@@ -38,6 +38,7 @@ function Cadastro(props) {
             console.log(err);
         });
 
+        console.log('oitente')
 
         if (props.musica !== "") {
             defineAlteracao(props.musica);
@@ -47,7 +48,15 @@ function Cadastro(props) {
     function defineAlteracao(musica) {
         setId(musica.id);
         setNome(musica.nome);
-        setAlbuns(musica.album_id)
+        console.log('musica.album')
+        console.log(musica.album)
+        setAlbuns(musica.album)
+
+        let albunsSelecionados = []
+
+        albunsSelecionados.push(musica.album)
+
+        setSelectedAlbuns(albunsSelecionados)        
     }
 
     function efetuaCadastro() {
@@ -65,14 +74,14 @@ function Cadastro(props) {
 
             let albunsSelecionadas = [];
             albuns.forEach((album) => {
-                if (albuns.indexOf(album.id) >= 0) {
+                if (selectedAlbuns.indexOf(album.id) >= 0) {
                     albunsSelecionadas.push(album)
                 }
-            })            
+            })                  
         
             var data = {
             nome: nome,            
-            album_id: albunsSelecionadas
+            album: albunsSelecionadas
             };
 
             if (id !== 0) {
@@ -89,7 +98,6 @@ function Cadastro(props) {
                         console.log(err.stack);
                     });
             } else {
-                console.log(data);
                 api.post("musica", data, headers)
                     .then(response => {
                         if (response.status === 201) {
@@ -131,12 +139,12 @@ function Cadastro(props) {
                         className="m-3"
                         label="Albuns"
                         variant="outlined"
-                        value={albuns}
+                        value={selectedAlbuns}
                         onChange={(event) => {
                             const {
                                 target: { value },
                             } = event;
-                            setAlbuns(
+                            setSelectedAlbuns(
                                 // On autofill we get a stringified value.
                                 typeof value === 'string' ? value.split(',') : value,
                             );
@@ -147,7 +155,9 @@ function Cadastro(props) {
                         SelectProps={{
                             multiple: true
                         }}>
-                        {albuns.map(option => (
+                            {console.log('albuns')}
+                            {console.log(albuns)}
+                        {albuns.dados.map(option => (
                             <MenuItem
                                 key={option.id}
                                 value={option.id}>

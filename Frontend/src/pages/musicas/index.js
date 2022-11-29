@@ -33,8 +33,6 @@ function Musica() {
             .then(response => {
                 var content = []                
                 response.data.dados.forEach(row => {
-                    console.log(row)
-                    console.log(row)
                     content.push({
                         id: row.id,
                         nome: row.nome,                        
@@ -62,7 +60,7 @@ function Musica() {
                 let musica = {
                     id: dataResponse.id,
                     nome: dataResponse.nome,                                 
-                    album: dataResponse.album.nome
+                    album: dataResponse.album                    
                 }
 
                 setMusic(musica);
@@ -74,7 +72,6 @@ function Musica() {
                 console.log("Error");
                 console.log(err.stack);
             });
-
     }
 
     function remover(id) {
@@ -100,7 +97,7 @@ function Musica() {
                 setAlert("Falha ao tentar remover Música. Por favor tente novamente mais tarde ou contate o Suporte Técnico.");
                 console.log("Error");
                 console.log(err.stack);
-            });
+        });
     }
 
     function cadastroSucesso() {
@@ -121,7 +118,7 @@ function Musica() {
         window.scrollTo(0, 0);
     }
 
-
+    
     return (
         <Fragment>
             <Container>
