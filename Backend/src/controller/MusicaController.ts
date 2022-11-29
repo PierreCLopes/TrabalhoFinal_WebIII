@@ -78,7 +78,7 @@ export default class MusicaController {
                 }
             });
             if (musica) {
-                return response.json(
+                return response.status(201).json(
                     musica
                 );
             }  
@@ -125,7 +125,7 @@ export default class MusicaController {
                     }
                 })
                 if (deleteMusica) {
-                    return response.status(202).json(
+                    return response.status(200).json(
                         {
                             mensagem: "Sucesso"
                         }

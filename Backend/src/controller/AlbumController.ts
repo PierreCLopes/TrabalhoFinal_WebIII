@@ -78,7 +78,7 @@ export default class AlbumController {
                 }
             });
             if (album) {
-                return response.json(
+                return response.status(201).json(
                     album
                 );
             }  
@@ -124,7 +124,7 @@ export default class AlbumController {
                     }
                 })
                 if (deleteAlbum) {
-                    return response.status(202).json(
+                    return response.status(200).json(
                         {
                             mensagem: "Sucesso"
                         }
