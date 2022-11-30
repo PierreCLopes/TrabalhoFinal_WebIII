@@ -10,8 +10,8 @@ function Cadastro(props) {
     const [nome, setNome] = useState();
     const [nomeError, setnomeError] = useState("");
 
-    const [selectedAlbuns, setSelectedAlbuns] = useState([]);
-    const [selectedAlbunsError, setSelectedAlbunsError] = useState("");
+    const [album, setAlbum] = useState('');
+    const [albumIdError, setAlbumIdError] = useState("");
 
     const [albuns, setAlbuns] = useState([]);
 
@@ -28,8 +28,8 @@ function Cadastro(props) {
             response.data.dados.forEach(row => {
                 content.push({
                     id: row.id,
-                    nome: row.nome                     
-                })
+                    nome: row.nome 
+                })                    
             });
             setAlbuns(content);
         })
@@ -37,8 +37,6 @@ function Cadastro(props) {
             console.log("Error");
             console.log(err);
         });
-
-        console.log('oitente')
 
         if (props.musica !== "") {
             defineAlteracao(props.musica);
@@ -48,21 +46,16 @@ function Cadastro(props) {
     function defineAlteracao(musica) {
         setId(musica.id);
         setNome(musica.nome);
-        console.log('musica.album')
-        console.log(musica.album)
-        setAlbuns(musica.album)
-
-        let albunsSelecionados = []
-
-        albunsSelecionados.push(musica.album)
-
-        setSelectedAlbuns(albunsSelecionados)        
+        console.log('musica.album');
+        console.log(musica.album);
+        setAlbum(musica.album.id);      
     }
 
     function efetuaCadastro() {
         var validaOperacao = true;
 
         setnomeError("");
+        setAlbumIdError("");
 
         if (nome === "" || nome == null) {
             validaOperacao = false;
@@ -70,19 +63,19 @@ function Cadastro(props) {
         }
 
         if (validaOperacao) {
-            console.log("Informações Válidas. Iniciando processo de cadastro...");
-
-            let albunsSelecionadas = [];
-            albuns.forEach((album) => {
-                if (selectedAlbuns.indexOf(album.id) >= 0) {
-                    albunsSelecionadas.push(album)
-                }
-            })                  
+            console.log("Informações Válidas. Iniciando processo de cadastro...");            
         
+            const headers = {
+                'Content-Type': 'application/json',
+                'access-control-allow-origin': '*'
+            }
+
+            let album = albuns.filter((row) => row.id === album)
+
             var data = {
-            nome: nome,            
-            album: albunsSelecionadas
-            };
+                nome: nome,            
+                album: album[0]
+            }
 
             if (id !== 0) {
                 api.put(`musica?id=${id}`, data, headers)
@@ -126,7 +119,7 @@ function Cadastro(props) {
                         variant="outlined"
                         type="text"
                         value={nome}
-                        onChange={e => setNome(e.target.value)}
+                        onChange={(e) => setNome(e.target.value)}
                         helperText={nomeError}
                         error={(nomeError !== "")}
                     />
@@ -134,36 +127,23 @@ function Cadastro(props) {
 
                 <Grid item xs={12} sm={4}>
                     <TextField
-                        id="albuns"
+                        id="album"
                         fullWidth
                         className="m-3"
                         label="Albuns"
                         variant="outlined"
-                        value={selectedAlbuns}
-                        onChange={(event) => {
-                            const {
-                                target: { value },
-                            } = event;
-                            setSelectedAlbuns(
-                                // On autofill we get a stringified value.
-                                typeof value === 'string' ? value.split(',') : value,
-                            );
-                        }}
-                        helperText={selectedAlbunsError}
-                        error={(selectedAlbunsError !== "")}
-                        select
-                        SelectProps={{
-                            multiple: true
-                        }}>
-                            {console.log('albuns')}
-                            {console.log(albuns)}
-                        {albuns.dados.map(option => (
+                        value={album}
+                        onChange={(e) => { setAlbum(e.target.value) }}
+                        helperText={albumIdError}
+                        error={(albumIdError !== "")}
+                        select>
+                        {albuns.map(option => 
                             <MenuItem
                                 key={option.id}
                                 value={option.id}>
                                 {option.name}
                             </MenuItem>
-                        ))}
+                        )}
                     </TextField>
                 </Grid>                   
                 
