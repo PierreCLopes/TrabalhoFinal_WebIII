@@ -23,13 +23,8 @@ function Musica() {
 
     const [musica, setMusic] = useState("");
 
-    const headers = {
-        'Content-Type': 'application/json',
-        'access-control-allow-origin': '*'
-    }
-
     useEffect(() => {
-        api.get("musica", '', headers)
+        api.get("musica")
             .then(response => {
                 var content = []                
                 response.data.dados.forEach(row => {
@@ -49,12 +44,7 @@ function Musica() {
     }, [pageTipe]);
 
     function editar(id) {
-        const headers = {
-            'Content-Type': 'application/json',
-            'access-control-allow-origin': '*'
-        }
-
-        api.get(`musica?id=${id}`, '', headers)
+        api.get(`musica?id=${id}`)
             .then(response => {
                 let dataResponse = response.data.dados;
                 let musica = {
@@ -75,12 +65,7 @@ function Musica() {
     }
 
     function remover(id) {
-        const headers = {
-            'Content-Type': 'application/json',
-            'access-control-allow-origin': '*'
-        }
-
-        api.delete(`musica?id=${id}`, '', headers)
+        api.delete(`musica?id=${id}`)
             .then(response => {
                 if (response.status === 200) {
                     setAlertType("success");

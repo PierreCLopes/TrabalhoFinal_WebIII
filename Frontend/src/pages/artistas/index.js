@@ -23,16 +23,10 @@ function Artista() {
 
     const [artista, setartista] = useState("");
 
-    const headers = {
-        'Content-Type': 'application/json',
-        'access-control-allow-origin': '*'
-    }
-
     useEffect(() => {
-        api.get("artista", '', headers)
+        api.get("artista")
             .then(response => {
                 var content = []
-                console.log(response.data)
                 response.data.dados.forEach(row => {
                     content.push({
                         id: row.id,
@@ -49,12 +43,7 @@ function Artista() {
     }, [pageTipe]);
 
     function editar(id) {
-        const headers = {
-            'Content-Type': 'application/json',
-            'access-control-allow-origin': '*'
-        }
-
-        api.get(`artista?id=${id}`, '', headers)
+        api.get(`artista?id=${id}`)
             .then(response => {
                 let dataResponse = response.data.dados;
                 let artista = {
@@ -75,12 +64,7 @@ function Artista() {
     }
 
     function remover(id) {
-        const headers = {
-            'Content-Type': 'application/json',
-            'access-control-allow-origin': '*'
-        }
-
-        api.delete(`artista?id=${id}`, '', headers)
+        api.delete(`artista?id=${id}`)
             .then(response => {
                 if (response.status === 200) {
                     setAlertType("success");

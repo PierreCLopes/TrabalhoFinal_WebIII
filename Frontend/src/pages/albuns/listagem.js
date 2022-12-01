@@ -21,7 +21,7 @@ class Listagem extends React.Component {
         };
 
         return (
-            <Grid item xs={12}>
+            <Grid item xs={20}>
                 <Card>
                     <CardContent>
                         <Table                        

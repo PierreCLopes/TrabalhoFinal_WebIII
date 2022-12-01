@@ -15,13 +15,8 @@ function Cadastro(props) {
 
     const [albuns, setAlbuns] = useState([]);
 
-    const headers = {
-        'Content-Type': 'application/json',
-        'access-control-allow-origin': '*'
-    }
-
     useEffect(() => {       
-        api.get("album", '', headers)
+        api.get("album")
         .then(response => {
             var content = []
 
@@ -46,8 +41,6 @@ function Cadastro(props) {
     function defineAlteracao(musica) {
         setId(musica.id);
         setNome(musica.nome);
-        console.log('musica.album');
-        console.log(musica.album);
         setAlbum(musica.album.id);      
     }
 
@@ -70,14 +63,12 @@ function Cadastro(props) {
                 'access-control-allow-origin': '*'
             }
 
-            let album = albuns.filter((row) => row.id === album)
-
-            var data = {
-                nome: nome,            
-                album: album[0]
-            }
-
             if (id !== 0) {
+                let data = {
+                    id: id,
+                    nome: nome,            
+                    album_id: album
+                }
                 api.put(`musica?id=${id}`, data, headers)
                     .then(response => {
                         if (response.status === 200) {
@@ -91,6 +82,11 @@ function Cadastro(props) {
                         console.log(err.stack);
                     });
             } else {
+                let data = {
+                    nome: nome,            
+                    album_id: album
+                }
+
                 api.post("musica", data, headers)
                     .then(response => {
                         if (response.status === 201) {
@@ -141,7 +137,7 @@ function Cadastro(props) {
                             <MenuItem
                                 key={option.id}
                                 value={option.id}>
-                                {option.name}
+                                {option.nome}
                             </MenuItem>
                         )}
                     </TextField>

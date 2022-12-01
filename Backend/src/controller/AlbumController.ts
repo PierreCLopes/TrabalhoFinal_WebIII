@@ -118,7 +118,7 @@ export default class AlbumController {
         const { id } = request.query;
         try {
             if (id) {
-                const deleteAlbum = await client.artista.delete({
+                const deleteAlbum = await client.album.delete({
                     where: {
                         id: Number(id)
                     }

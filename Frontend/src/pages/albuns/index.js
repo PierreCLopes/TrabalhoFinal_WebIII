@@ -22,18 +22,12 @@ function Album() {
 
     const [album, setAlbum] = useState("");
 
-    const headers = {
-        'Content-Type': 'application/json',
-        'access-control-allow-origin': '*'
-    }
-
     useEffect(() => {
-        api.get("album", '', headers)
-            .then(async response => {
+        api.get("album")
+            .then(response => {
                 var content = []            
                 
-                await response.data.dados.forEach(row => {                    
-                    console.log(row)
+                response.data.dados.forEach(row => {                    
                     content.push({
                         id: row.id,
                         nome: row.nome,
@@ -52,19 +46,14 @@ function Album() {
     }, [pageTipe]);
 
     function editar(id) {
-        const headers = {
-            'Content-Type': 'application/json',
-            'access-control-allow-origin': '*'
-        }
-
-        api.get(`album?id=${id}`, '', headers)
+        api.get(`album?id=${id}`)
             .then(response => {
                 let dataResponse = response.data.dados;
                 let album = {
                     id: dataResponse.id,
                     nome: dataResponse.nome,
-                    ano: dataResponse.ano
-                    // artista: ((dataResponse.artista != null) ? dataResponse.artista : {})
+                    ano: dataResponse.ano,
+                    artista: dataResponse.artista
                 }
                 setAlbum(album);
                 setPageTipe(2);
@@ -79,12 +68,7 @@ function Album() {
     }
 
     function remover(id) {
-        const headers = {
-            'Content-Type': 'application/json',
-            'access-control-allow-origin': '*'
-        }
-
-        api.delete(`album?id=${id}`, '', headers)
+        api.delete(`album?id=${id}`)
             .then(response => {
                 if (response.status === 200) {
                     setAlertType("success");

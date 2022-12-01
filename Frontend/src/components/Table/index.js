@@ -44,17 +44,18 @@ export default class Table extends Component {
 
         const tableOptions = {
             sizePerPageList: [
-                { text: '100', value: 100 },
-                { text: '150', value: 150 },
-                { text: '200', value: 200 }
+                { text: '5', value: 5 },
+                { text: '10', value: 10 },
+                { text: '20', value: 20 }
             ],
-            sizePerPage: 100,  // which size per page you want to locate as default
+            sizePerPage: 5,  // which size per page you want to locate as default
             paginationShowsTotal: this.renderShowsTotal,  // Accept bool or function
-            paginationPosition: 'bottom',  // default is bottom, top and both is all available
+            paginationPosition: 'top',  // default is bottom, top and both is all available
             alwaysShowAllBtns: true, // Always show next and previous button
             noDataText: 'Não há registros existentes na tabela.',
             searchPosition: 'left',
             sortIndicator: true,
+            
             searchField: (props) => (
                 <SearchButton
                     autoFocus={this.props.searchAutoFocus}

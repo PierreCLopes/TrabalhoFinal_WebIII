@@ -7,36 +7,34 @@ function Cadastro(props) {
 
     const [id, setId] = useState(0);
 
-    const [nome, setName] = useState();
+    const [nome, setNome] = useState();
     const [nomeError, setnomeError] = useState("");
 
     const [ano, setAno] = useState();
     const [anoError, setAnoError] = useState("");
 
-    const [artistas, setArtista] = useState([]);
+    const [artista, setArtista] = useState('');
     const [artistaIdError, setArtistaIdError] = useState("");
 
-    const headers = {
-        'Content-Type': 'application/json',
-        'access-control-allow-origin': '*'
-    }
+    const [artistas, setArtistas] = useState([]);
 
-    useEffect(() => {
-        // api.get("artista", '', headers)
-        //     .then(response => {
-        //         var content = []
-        //         response.data.found.forEach(row => {
-        //             content.push({
-        //                 id: row.id,
-        //                 nome: row.nome
-        //             })
-        //         });
-        //         setArtista(content);
-        //     })
-        //     .catch((err) => {
-        //         console.log("Error");
-        //         console.log(err);
-        //     });
+    useEffect(() => {       
+        api.get("artista")
+        .then(response => {
+            var content = []
+
+            response.data.dados.forEach(row => {
+                content.push({
+                    id: row.id,
+                    nome: row.nome 
+                })                    
+            });
+            setArtistas(content);
+        })
+        .catch((err) => {
+            console.log("Error");
+            console.log(err);
+        });
 
         if (props.album !== "") {
             defineAlteracao(props.album);
@@ -45,9 +43,9 @@ function Cadastro(props) {
 
     function defineAlteracao(album) {
         setId(album.id);
-        setName(album.nome);
+        setNome(album.nome);
         setAno(album.ano);
-        setArtista(album.artista_id);
+        setArtista(album.artista.id);
     }
 
     function efetuaCadastro() {
@@ -71,21 +69,17 @@ function Cadastro(props) {
         if (validaOperacao) {
             console.log("Informações Válidas. Iniciando processo de cadastro...");
 
-            const headers = {
-                'Content-Type': 'application/json',
-                'access-control-allow-origin': '*'
-            }
 
-            let artista = artistas.filter((row) => row.id === artista)
-
-            var data = {
-                nome: nome,
-                ano: ano,
-                artista: artista[0],
-            };
 
             if (id !== 0) {
-                api.put(`album`, data, headers)
+                let data = {
+                    id,
+                    nome,
+                    ano,
+                    artista_id: artista
+                };
+
+                api.put("album", data)
                     .then(response => {
                         if (response.status === 200) {
                             props.cadastroSucesso()
@@ -98,8 +92,13 @@ function Cadastro(props) {
                         console.log(err.stack);
                     });
             } else {
-                console.log(data);
-                api.post("album", data, headers)
+                let data = {
+                    nome,
+                    ano,
+                    artista_id: artista
+                };
+
+                api.post("album", data)
                     .then(response => {
                         if (response.status === 201) {
                             props.cadastroSucesso();
@@ -127,7 +126,7 @@ function Cadastro(props) {
                         variant="outlined"
                         type="text"
                         value={nome}
-                        onChange={e => setName(e.target.value)}
+                        onChange={e => setNome(e.target.value)}
                         helperText={nomeError}
                         error={(nomeError !== "")}
                     />
@@ -139,7 +138,7 @@ function Cadastro(props) {
                         id="ano"
                         label="Ano"
                         variant="outlined"
-                        type="text"
+                        type="number"
                         value={ano}
                         onChange={e => setAno(e.target.value)}
                         helperText={anoError}
@@ -153,13 +152,18 @@ function Cadastro(props) {
                         className="m-3"
                         label="Artista"
                         variant="outlined"
-                        value={artistas}
+                        value={artista}
                         onChange={(e) => { setArtista(e.target.value) }}
                         helperText={artistaIdError}
                         error={(artistaIdError !== "")}
-                        
                         select>
-                        
+                        {artistas.map(option => 
+                            <MenuItem
+                                key={option.id}
+                                value={option.id}>
+                                {option.nome}
+                            </MenuItem>
+                        )}
                     </TextField>
                 </Grid>               
 
